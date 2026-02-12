@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>My Appointments - Bharti Vidyapeeth Hospital</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">BV Hospital</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto align-items-center">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="departments.html">Departments</a></li>
+          <li class="nav-item"><a class="nav-link" href="doctors.html">Doctors</a></li>
+          <li class="nav-item"><a class="nav-link" href="services.html">Services</a></li>
+          <li class="nav-item"><a class="nav-link active" href="appointments.html">My Appointments</a></li>
+          <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+          <li class="nav-item ms-lg-3">
+            <a href="appointment.html" class="btn btn-custom-primary btn-sm rounded-pill px-4">Book Appointment</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container" style="padding-top:110px;">
+    <h2 class="mb-4">My Appointments</h2>
+
+    <div id="message"></div>
+
+    <table class="table table-striped" id="appTable" style="display:none;">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Gender</th>
+          <th>Subject</th>
+          <th>Preferred Days</th>
+          <th>Message</th>
+          <th>Submitted At</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <div class="mt-3">
+      <a href="appointment.html" class="btn btn-primary">Add New Appointment</a>
+    </div>
+  </main>
+
+  <script>
+    function showMessage(msg, type='info') {
+      document.getElementById('message').innerHTML = `<div class="alert alert-${type}">${msg}</div>`;
+    }
+
+    function renderList(list) {
+      const table = document.getElementById('appTable');
+      const tbody = table.querySelector('tbody');
+      tbody.innerHTML = '';
+      list.forEach((r, i) => {
+        const tr = document.createElement('tr');
+        const days = Array.isArray(r.preferredDays) ? r.preferredDays.join(', ') : '';
+        tr.innerHTML = `<td>${i+1}</td>
+                        <td>${r.name||''}</td>
+                        <td>${r.email||''}</td>
+                        <td>${r.phone||''}</td>
+                        <td>${r.gender||''}</td>
+                        <td>${r.subject||''}</td>
+                        <td>${days}</td>
+                        <td>${r.message||''}</td>
+                        <td>${r.submittedAt ? new Date(r.submittedAt).toLocaleString() : ''}</td>`;
+        tbody.appendChild(tr);
+      });
+      table.style.display = list.length ? '' : 'none';
+      if (!list.length) showMessage('No appointments yet.', 'warning');
+      else showMessage(`Loaded ${list.length} appointments.`, 'success');
+    }
+
+    // Try server first
+    (function load() {
+      showMessage('Loading appointments...', 'info');
+
+      const xhr = new XMLHttpRequest();
+      xhr.open('GET', 'list_appointments.php', true);
+      xhr.onload = function () {
+        if (xhr.status >=200 && xhr.status < 300) {
+          try {
+            const res = JSON.parse(xhr.responseText);
+            if (Array.isArray(res)) {
+              renderList(res);
+              return;
+            }
+          } catch (e) {
+            // invalid json; fallback
+          }
+        }
+        // fallback to localStorage
+        const raw = localStorage.getItem('appointments');
+        const list = raw ? JSON.parse(raw) : [];
+        renderList(list);
+      };
+      xhr.onerror = function () {
+        const raw = localStorage.getItem('appointments');
+        const list = raw ? JSON.parse(raw) : [];
+        renderList(list);
+      };
+      xhr.send();
+    })();
+  </script>
+</body>
+</html>

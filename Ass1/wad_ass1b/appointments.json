@@ -1,0 +1,26 @@
+[
+    {
+        "name": "Soham",
+        "email": "som@gmail.com",
+        "phone": "6212312345",
+        "gender": "Male",
+        "subject": "appointment",
+        "message": "I want to book appointment for some medical issue",
+        "preferredDays": [
+            "Tuesday"
+        ],
+        "submittedAt": "2026-02-12T12:30:13+01:00"
+    },
+    {
+        "name": "Tejas",
+        "email": "teja@gmail.com",
+        "phone": "6212312345",
+        "gender": "Male",
+        "subject": "appointment",
+        "message": "I am booking appointment for having some medical issues.I hope to resolve it by from BV hospital , please kindly accept my bookings.",
+        "preferredDays": [
+            "Thursday"
+        ],
+        "submittedAt": "2026-02-12T12:31:40+01:00"
+    }
+]
