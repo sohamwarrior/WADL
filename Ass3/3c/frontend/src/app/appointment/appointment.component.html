@@ -1,0 +1,66 @@
+<div class="container" style="padding-top: 110px; max-width: 800px;">
+  <h2 class="mb-4">Book an Appointment</h2>
+
+  <form (ngSubmit)="submitAppointment()">
+    <div class="mb-3">
+      <label for="name" class="form-label">Full Name *</label>
+      <input id="name" type="text" class="form-control" [(ngModel)]="appointment.name" name="name" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="email" class="form-label">Email *</label>
+      <input id="email" type="email" class="form-control" [(ngModel)]="appointment.email" name="email" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="phone" class="form-label">Phone Number *</label>
+      <input id="phone" type="tel" class="form-control" [(ngModel)]="appointment.phone" name="phone" required placeholder="10 digits">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Gender</label><br>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" [(ngModel)]="appointment.gender" name="gender" id="g-male" value="Male">
+        <label class="form-check-label" for="g-male">Male</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" [(ngModel)]="appointment.gender" name="gender" id="g-female" value="Female">
+        <label class="form-check-label" for="g-female">Female</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" [(ngModel)]="appointment.gender" name="gender" id="g-other" value="Other">
+        <label class="form-check-label" for="g-other">Other</label>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Preferred Consultation Days</label>
+      <div class="bg-light p-3 rounded">
+        <div class="form-check form-check-inline" *ngFor="let day of days">
+          <input class="form-check-input" type="checkbox" [checked]="isDaySelected(day)" (change)="toggleDay(day)" [id]="'day-'+day">
+          <label class="form-check-label" [for]="'day-'+day">{{ day }}</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="subject" class="form-label">Subject</label>
+      <select id="subject" class="form-select" [(ngModel)]="appointment.subject" name="subject">
+        <option value="appointment">Book an Appointment</option>
+        <option value="inquiry">General Inquiry</option>
+        <option value="feedback">Feedback</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="message" class="form-label">Message</label>
+      <textarea id="message" rows="4" class="form-control" [(ngModel)]="appointment.message" name="message"></textarea>
+    </div>
+
+    <div class="mb-3">
+      <button type="submit" class="btn btn-custom-primary">Submit Appointment</button>
+      <a routerLink="/appointments" class="btn btn-outline-secondary ms-2">View My Appointments</a>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,19 @@
+<div class="container" style="padding-top: 110px; max-width: 600px;">
+  <div *ngIf="user" class="card shadow border-0" style="border-radius: 15px; overflow: hidden;">
+    <div class="card-header text-center text-white p-4" style="background: linear-gradient(135deg, #0f3460 0%, #16213e 100%);">
+      <i class="fas fa-user-circle fa-5x mb-3"></i>
+      <h2 class="text-white">Welcome, {{ user.name }}</h2>
+    </div>
+    <div class="card-body p-4">
+      <div class="mb-3 p-3 bg-light rounded">
+        <strong><i class="fas fa-envelope me-2 text-primary"></i> Email:</strong>
+        <span class="ms-2">{{ user.email }}</span>
+      </div>
+      <div class="text-center mt-4">
+        <button class="btn btn-danger rounded-pill px-4" (click)="logout()">
+          <i class="fas fa-sign-out-alt me-2"></i>Logout
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
